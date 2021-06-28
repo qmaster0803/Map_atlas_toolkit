@@ -1,0 +1,568 @@
+features
+	points
+		//метки города разных размеров
+		place city : place=city
+		place town : place=town
+		place village : place=village
+		place hamlet : place=hamlet
+		place locality: place=locality
+		place isolated_dwelling : place=isolated_dwelling
+		place suburb : place=suburb
+		//точки GPX файлов
+		gps waypoints : gpswaypoint[]
+	points, areas
+		housenumber : [addr:housenumber]
+	areas
+		//озёра, моря, пруды
+		water : natural=water OR waterway=riverbank OR waterway=dock OR waterway=river OR waterway=stream OR waterway=canal OR waterway=drain OR natural=bay	
+		//болота
+		wetland : natural=wetland
+		//леса и парки
+		forest : landuse=forest OR natural=wood OR leisure=park 
+		//кусты
+		scrub : natural=scrub
+		//пляжи (песок)
+		beach : natural=beach
+		//места для стройки/площадки от разрушенных зданий
+		brownfield : landuse=brownfield
+		//здания
+		building : building
+		//детские и спортивные площадки
+		playground : leisure=playground OR leisure=pitch
+		//трава
+		grass : landuse=grass
+		//кладбища
+		cemetery : landuse=cemetery
+		//автомобильные парковки
+		parking : amenity=parking
+		//промзоны
+		industrial zone : landuse=industrial
+		//фермы и деревенские площадки
+		farmland : landuse=farmland
+		//территория деревень (фон)
+		residential territory : landuse=residential
+		//просеки и искусственные поляны
+		clearcut : man_made=clearcut
+		//привалы и кемпинги
+		camping : leisure=resort OR tourism=camp_site
+	lines
+		//ручьи и речки
+		water line : waterway=stream OR waterway=river OR waterway=ditch OR waterway=drain OR waterway=canal
+		//железные дороги
+		railway : railway=rail
+		//береговая линия
+		coast : natural=coastline
+		//тропы/неразмеченные дороги
+		track : highway=track
+		//дворовые улицы
+		yard : highway=service OR highway=living_street OR (highway=construction AND construction=living_street)
+		//тропинки
+		footway : highway=footway OR highway=path OR highway=pedestrian OR highway=cycleway
+		//лестницы
+		steps : highway=steps
+		//автомагистрали
+		motorway : highway=motorway OR (highway=construction AND construction=motorway) OR highway=motorway_link OR (highway=construction AND construction=motorway_link)
+		//дороги федерального значения
+		trunk : highway=trunk OR (highway=construction AND construction=trunk) OR highway=trunk_link OR (highway=construction AND construction=trunk_link)
+		//типы городских дорог
+		highway primary : highway=primary OR (highway=construction AND construction=primary) OR highway=primary_link OR (highway=construction AND construction=primary_link)
+		highway secondary : highway=secondary OR (highway=construction AND construction=secondary)
+		highway tertiary : highway=tertiary OR (highway=construction AND construction=tertiary)
+		//дороги с неизвестным покрытием
+		unclassified roads : highway=unclassified OR (highway=construction AND construction=unclassified)
+		//сельские дороги
+		residential road : highway=residential OR (highway=construction AND construction=residential)
+		//забор
+		fence : barrier=fence
+		//государственная граница
+		boundary country : boundary=administrative AND (admin_level=2 OR admin_level=4)
+
+properties
+	map-background-color : #D4D4D4
+
+rules
+	//points
+	target : place city
+		define
+			font-weight : bold
+			text-max-width : 1000
+			text-align-horizontal : near
+			font-size : 6:8;14:20
+			min-zoom : 6
+			max-zoom : 14
+			placement-value : 1000
+			text-halo-width : 30%
+		draw : text
+
+	target : place town
+		define
+			font-weight : bold
+			text-max-width : 1000
+			text-align-horizontal : near
+			font-size : 9:12;12:14;20:24
+			min-zoom : 9
+			placement-value : 20
+			text-halo-width : 30%
+		draw : text
+
+	target : place village
+		define
+			font-weight : bold
+			text-max-width : 1000
+			text-align-horizontal : near
+			font-size : 12:13;20:23
+			min-zoom : 12
+			placement-value : 1
+			text-halo-width : 30%
+		draw : text
+
+	target : place hamlet
+		define
+			font-weight : bold
+			text-max-width : 1000
+			text-align-horizontal : near
+			font-size : 14:12;20:20
+			min-zoom : 13.5
+			placement-value : 0.1
+			text-halo-width : 30%
+		draw : text
+
+	target : place locality
+		define
+			font-weight : bold
+			text-max-width : 1000
+			text-align-horizontal : near
+			font-size : 14:14;20:20
+			min-zoom : 13.5
+			placement-value : 0.1
+			text-halo-width : 30%
+		draw : text
+
+	target : place isolated_dwelling
+		define
+			font-weight : bold
+			text-max-width : 1000
+			text-align-horizontal : near
+			font-size : 15:8;20:14
+			min-zoom : 15	
+			placement-value : 0.1
+			text-halo-width : 30%
+		draw : text
+
+	target : place suburb
+		define
+			font-weight : bold
+			text-max-width : 1000
+			text-align-horizontal : near
+			font-size : 13:13;20:23
+			min-zoom : 13
+			placement-value : 10
+			text-halo-width : 30%
+		draw : text
+
+	target : gps waypoints
+		define
+			shape : circle
+			shape-size : 8
+			line-width : 4	
+			line-color : red
+			fill-color : green
+		draw : shape
+		define
+			min-zoom : 14.5
+			text-halo-width : 30%
+			font-size : 13
+			//text-align-vertical : near
+		draw : text
+
+	//points, areas
+	target : housenumber
+		define
+			min-zoom : 16
+			text : [[addr:housenumber]]
+			text-halo-width : 30%
+			font-size : 12
+			placement-value : 0.01
+		draw : text
+
+	//areas
+	target : water
+		define
+			line-color : lightgray
+			line-width : 0.5
+			fill-color: #037FFC
+		draw : fill
+		define
+			font-weight : normal
+			text-halo-width: 20%
+			font-size : 12
+			min-zoom : 13
+		draw : text
+
+	target : wetland
+		define
+			line-color : lightgray
+			line-width : 0.5
+			fill-texture : Textures/Wetland.jpg
+		draw : fill
+
+	target : forest
+		define
+			line-style : none
+			fill-color : #65B340
+		draw : fill
+
+	target : scrub
+		define
+			line-color : lightgray
+			line-width : 0.5
+			fill-color : #95B359
+		draw : fill
+
+	target : beach
+		define
+			line-color : lightgray
+			line-width : 0.5
+			fill-color : #F0Ed4F
+		draw : fill
+
+	target : brownfield
+		define
+			min-zoom : 12
+			fill-color : #6B6B6B
+			line-width : 0
+		draw : fill
+
+	target : building
+		define
+			min-zoom : 12.5
+			fill-color : #A9A9A9
+			line-width : 1
+		draw : fill
+		define
+			min-zoom : 16
+			font-size : 12
+			text-halo-width : 30%
+		draw : text
+
+	target : playground
+		define
+			min-zoom : 13.5
+			fill-color : #77E6DE
+			line-width : 0.5
+			line-color : lightgray
+		draw : fill
+
+	target : grass
+		define
+			fill-color : #9BFF87
+			line-width : 0.5
+			line-color : lightgray
+		draw : fill
+
+	target : cemetery
+		define
+			line-width : 0.5
+			line-color : lightgray
+			fill-texture : Textures/Cemetery.jpg
+		draw : fill
+
+	target : parking
+		define
+			line-width : 0.5
+			line-color : lightgray
+			fill-texture : Textures/Parking.jpg
+		draw : fill
+
+	target : industrial zone
+		define
+			line-width : 0.5
+			line-color : lightgray
+			fill-color : #D15D36
+		draw : fill
+
+	target : farmland
+		define
+			line-width : 0.5
+			line-color : lightgray
+			fill-color : #B39F98
+		draw : fill
+
+	target : residential territory
+		define
+			line-width : 0.5
+			line-color : lightgray
+			fill-color : #B3B3B3
+		draw : fill
+
+	target : clearcut
+		define
+			line-color : black
+			line-width : 1.5
+			fill-texture : Textures/Clearcut.png
+		draw : fill
+
+	target : camping
+		define
+			line-color : lightgray
+			line-width : 1.5
+			fill-texture : Textures/Camping.png
+		draw : fill
+
+	//lines
+	target : water line
+		define
+			line-width : 2
+			line-color : #037FFC
+		draw : line
+	target : railway
+		define
+			min-zoom : 13
+			line-color : #606060
+			line-width : 4
+		draw : line
+		define
+			min-zoom : 13
+			line-style : dashlong
+			line-color : white
+			line-width : 2
+			border-style : solid
+			border-color : #606060
+			border-width : 25%
+		draw : line
+		define
+			min-zoom : 6
+			max-zoom : 13
+			line-style : solid
+			border-style : none
+			line-color : #A1A1A1
+			line-width : 1.2
+		draw : line
+
+	target : coast
+		define
+			min-zoom : 12
+			line-color : #E65829
+			line-width : 2
+		draw : line
+
+	target : track
+		define
+			line-color : #6E6E6E
+			line-width : 14.5:1.7;15:4
+			min-zoom : 13
+			line-style : dash
+		draw : line
+
+	target : yard
+		define
+			min-zoom : 13
+			line-color : #CECECE
+			line-width : 12:0.5;13:1;15:3;18:5
+			border-style : solid
+			border-color : #B5B5B5 black 20%
+			border-width : 15%
+			font-size : 15:7;18:10
+			font-weight : bold
+		draw : line
+		define
+			min-zoom : 14
+			font-size : 12
+			text-halo-width : 30%
+		draw : text
+
+	target : footway
+		define
+			min-zoom : 13.5
+			line-color : #F68474
+			line-width : 13:0.5;15:1;18:1.5
+			line-style : dot
+			border-style : solid
+			border-color : white
+			border-width : 100%
+			border-opacity : 0.3
+		draw : line
+		define
+			min-zoom : 15
+			font-size : 12
+			text-halo-width : 30%
+		draw : text
+
+	target : motorway
+		define
+			min-zoom : 12
+			line-color : #849BBD
+			border-style : solid
+			border-color : #849BBD black 20%
+			border-width : 15%
+			line-width : 7:1;9:2;12:3;13:7;16:10;18:12
+		draw : line
+		define
+			min-zoom : 7
+			max-zoom : 12
+			border-style : none
+		draw : line
+		define
+			min-zoom : 11
+			max-zoom : 20
+			font-family : Tahoma
+			text-align-horizontal : center
+			text-align-vertical : center
+			text : ref
+			font-size : 12
+			text-color : #fcfcfb
+			text-halo-width : 0
+			shape : custom
+			shape-def : p:#809bc0;pw:5;f:#809bc0;m:-10,-10;l:10,-10;a:10,10,10,10;l:-10,10;a:10,10,-10,-10;z;p:#fcfcfb;pw:2;m:-10,-10;l:10,-10;a:10,10,10,10;l:-10,10;a:10,10,-10,-10;z
+			shield-padding-left : 5
+			shield-padding-right : 5
+			shield-padding-top : 7
+			shield-padding-bottom : 7
+			shield-resize-mode : free
+		draw : shield
+
+	target : trunk
+		define
+			min-zoom : 12
+			line-color : #96D296
+			line-width : 11:1;13:2;15:10;18:12
+			border-style : solid
+			border-color : #96D296 black 20%
+			border-width : 15%
+		for : tunnel=yes
+			define
+				border-style : dot
+		draw : line
+		define
+			min-zoom : 7
+			max-zoom : 12
+			border-style : none
+		draw : line
+
+	target : highway primary
+		define
+			min-zoom : 11
+			line-color : #ECA2A3
+			line-width : 11:2;12:2;15:10;18:12
+			border-style : solid
+			border-color : #ECA2A3 black 20%
+			border-width : 15%
+		draw : line
+		define
+			min-zoom : 7
+			max-zoom : 11
+			border-style : none
+		draw : line
+		define
+			min-zoom : 14
+			max-zoom : 20
+			text-halo-width : 30%
+			font-size : 15
+		draw : text
+
+	target : highway secondary
+		define
+			min-zoom : 12
+			line-color : #FDD6A4
+			line-width : 10:1;11:2;13:2;15:10;18:12
+			border-style : solid
+			border-color : #CAA36F
+			border-width : 5%
+		draw : line
+		define
+			min-zoom : 8.5
+			max-zoom : 12
+			border-style : none
+		draw : line
+		define
+			min-zoom : 13
+			max-zoom : 20
+			text-halo-width : 30%
+			font-size : 13
+		draw : text
+
+	target : highway tertiary
+		define
+			min-zoom : 13
+			line-color : #FEFEB2
+			line-width : 10:1;13:2;15:10;18:12
+			border-style : solid
+			border-color : #FEFEB2 black 20%
+			border-width : 15%
+		draw : line
+		define
+			min-zoom : 10
+			max-zoom : 13
+			line-color : white black 25%
+			border-style : none
+		draw : line
+		define
+			min-zoom : 14
+			max-zoom : 20
+			font-size : 12
+			text-halo-width : 30%
+		draw : text
+
+	target : residential road
+		define
+			min-zoom : 13
+			line-color : #A3A3A3
+			line-width : 12:1;13:1.5;15:3;18:6
+			border-style : solid
+			border-color : white black 25%
+			border-width : 15%
+		draw : line
+		define
+			min-zoom : 10
+			max-zoom : 13
+			border-style : none
+			line-color : white black 25%
+		draw : line
+		define
+			min-zoom : 14
+			max-zoom : 20
+			font-size : 12
+			text-halo-width : 30%
+		draw : text
+
+	target : unclassified roads
+		define
+			min-zoom : 13
+			line-color : #A3A3A3
+			line-width : 12:1;13:1.5;15:3;18:6
+			border-style : solid
+			border-color : white black 25%
+			border-width : 15%
+		draw : line
+		define
+			min-zoom : 10
+			max-zoom : 13
+			border-style : none
+			line-color : white black 25%
+		draw : line
+
+	target : steps
+		define
+			min-zoom : 16
+			shape : custom
+			shape-def : -1,1, -1,-1, 1,-1, 1,1;Z
+			shape-spacing : 2
+			shape-size : 16:1;20:3
+			shape-aspect : 3
+			fill-color : #F98072
+			line-style : none
+		draw : shape
+
+	target : fence
+		define
+			line-width : 13:1;15:1.5;18:2
+			line-color : #F68474
+			min-zoom : 14.5
+		draw : line
+
+	target : boundary country
+		define
+			line-color : #9E1A99
+			line-width : 6:1;9:3;10:6
+			line-opacity : 0.5
+		draw : line

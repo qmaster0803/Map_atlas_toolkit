@@ -1,0 +1,7 @@
+change-dir /home/q/Maps
+set-setting name=map.decoration.logo value="/home/q/Maps/map-logo.png"
+set-setting name=user.command-line-autocompletion value="False"
+use-ruleset /home/q/Maps/paper.mrules
+apply-ruleset
+
+run-python /home/q/Maps/change_copyright.py
