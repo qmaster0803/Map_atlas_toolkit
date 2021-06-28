@@ -1,0 +1,10 @@
+#raw .osm files (can be downloaded using josm or website)
+Raw/
+
+#output renders from Maperitive
+output/
+
+#Maperitive temp files
+Maperitive/Cache/
+Maperitive/logs/
+Maperitive/Temp/
