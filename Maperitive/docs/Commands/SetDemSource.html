@@ -1,0 +1,138 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />    
+        <link href="../MaperitiveEmbedded.css" rel="stylesheet" type="text/css" />
+        <link href="http://fonts.googleapis.com/css?family=Titillium+Web:400,700&subset=latin,latin-ext" rel="stylesheet" type="text/css" />
+        <title>Maperitive: set-dem-source Command</title>
+    </head>
+    <body>
+        <div id="header">
+            <a href="../default.html">Maperitive 2.4.3 documentation</a>
+        </div>
+               
+        <div id="docbody">
+<!--            <div class="note">
+                NOTE: These pages are under construction. They probably contain a lot of mistakes. If you spot any
+                don't hesistate to <a href="http://maperitive.net/">write to the author</a>.
+            </div>
+            
+-->            
+<h1 id="set-dem-source Command">
+	set-dem-source Command
+</h1>
+<table class="toc" id="toc">
+	<tbody>
+		<tr>
+			<td><div id="toctitle">
+				<h2>
+					Contents
+				</h2>
+			</div><ul>
+				<li class="toclevel-2"><a href="#Usage">Usage</a></li><li class="toclevel-2"><a href="#Using%20Built-In%20DEM%20Sources">Using Built-In DEM Sources</a></li><li class="toclevel-2"><a href="#Access%20to%20SRTM%20V3">Access to SRTM V3</a></li><ul>
+					<li class="toclevel-3"><a href="#Technical%20Details">Technical Details</a></li><li class="toclevel-3"><a href="#The%20Procedure">The Procedure</a></li><ul>
+						<li class="toclevel-4"><a href="#Delete%20Existing%20SRTMV3R1/SRTMV3R3%20Cache%20Index">Delete Existing SRTMV3R1/SRTMV3R3 Cache Index</a></li><li class="toclevel-4"><a href="#Registering%20on%20EarthData%20Portal">Registering on EarthData Portal</a></li><li class="toclevel-4"><a href="#Access%20A%20Sample%20SRTM%20File">Access A Sample SRTM File</a></li><li class="toclevel-4"><a href="#Give%20Maperitive%20the%20Authentication%20Token">Give Maperitive the Authentication Token</a></li>
+					</ul><li class="toclevel-3"><a href="#Troubleshooting%20SRTM%20V3%20Access">Troubleshooting SRTM V3 Access</a></li>
+				</ul><li class="toclevel-2"><a href="#Using%20Your%20Own%20Custom%20DEM%20Sources">Using Your Own Custom DEM Sources</a></li><li class="toclevel-2"><a href="#Links%20&amp;%20Resources">Links & Resources</a></li>
+			</ul></td>
+		</tr>
+	</tbody>
+</table><p> Specifies which DEM (digital elevation model) source Maperitive should use for various DEM-related operations. You can specify <strong>built-in sources</strong> (like SRTM1 and SRTM3) or your <strong>custom source</strong>.</p>
+<h2 id="Usage">
+	Usage
+</h2>
+<pre>
+ set-dem-source 
+     name=&lt;DEM source name&gt;
+</pre><p>Parameters:</p><ul>
+	<li><strong>name</strong>: specifies the name of the DEM source. See the subsections below for instructions on setting built-in and custom DEM sources.</li>
+
+</ul>
+<h2 id="Using Built-In DEM Sources">
+	Using Built-In DEM Sources
+</h2>
+<p>Built-in DEM sources are easier to use because Maperitive automatically downloads the DEM data from the required web server. Currently there are three DEM sources built into Maperitive:</p><ul>
+	<li><strong>SRTM3</strong>: this is the default DEM source when you start Maperitive for the first time. It <a href="http://www.itu.int/SRTM3/Continent_def.800.gif">covers most of the world</a> from 56°S to 60°N of latitude. The resolution is three arcseconds (cca. 90 m). It contains a lot of data voids, especially in mountainous areas like Alps (see <a href="http://en.wikipedia.org/wiki/Shuttle_Radar_Topography_Mission#No-data_areas">data voids</a> for more information). This data voids cause generated relief images and contours to contain "white spots". The data is in Public Domain.</li>
+	<li><strong>SRTM1</strong>: similar to SRTM3, but with one arcsecond (30 m) resolution and covering only USA territory.</li>
+	<li><strong>SRTMV3R3</strong>: a NASA's new version (v3.0) of SRTM3, which has the data voids filled. To be able to use this source, you need to follow <i>Access to SRTM V3</i> instructions below. Covers most of the world.</li>
+	<li><strong>SRTMV3R1</strong>: a NASA's new version (v3.0) of SRTM1, which has the data voids filled. To be able to use this source, you need to follow <i>Access to SRTM V3</i> instructions below. Covers most of the world.</li>
+	<li><strong>VF.Alps</strong>: one arcsecond resolution DEM covering Alps without any major data voids. Source: <a href="http://www.viewfinderpanoramas.org/dem3.html#alps">http://www.viewfinderpanoramas.org/dem3.html#alps</a>.</li>
+
+</ul>
+<h2 id="Access to SRTM V3">
+	Access to SRTM V3
+</h2>
+<p>NASA's SRTM V3 is generally the best DEM source that you can get. It does not have data voids and its R1 (1 arc second) variant is now available for most of the world. The only drawback is that the data can only be accessed through NASA's EarthData portal login (and not anonymously like it is possible for the old V2 data).</p>
+<h3 id="Technical Details">
+	Technical Details
+</h3>
+<p>EarthData uses OAuth 2 protocol, but NASA does not seem to allow external applications  (like Maperitive) to register and receive user authentication tokens. The only way I could find to allow Maperitive to access their DEM data was to insert OAuth authentication token directly into HTTP requests. Each user that wants to use SRTM V3 data will need to register on EarthData portal and then perform the (somewhat hacky) procedure described in following subsections.</p><p><div class="note">
+    <strong>NOTE:</strong> Maperitive stores the authentication token in cleartext in its settings file. While I do not see EarthData as a very important or security-sensitive application, I still feel obliged to warn you about this. If you do not want this piece of information to be stored in cleartext, do not provide it to Maperitive and do not use the SRTM V3 dataset.
+</div></p>
+<h3 id="The Procedure">
+	The Procedure
+</h3>
+<p>The procedure assumes you are using Chrome as your browser and it describes instructions on how to inspect the HTTP request using  Chrome's Developer Tools. Most (all?) other browsers also allow HTTP request inspection, either through built-in tools or using a browser extension. Google is your friend here.</p>
+<h4 id="Delete Existing SRTMV3R1/SRTMV3R3 Cache Index">
+	Delete Existing SRTMV3R1/SRTMV3R3 Cache Index
+</h4>
+<p>In order for this procedure to work correctly, you may need to delete any existing tile index files stored in the cache, if they were created by Maperitive prior to version 2.4.0. The two files to delete are <i>Cache/Rasters/SRTMV3R1/TileIndex.dat</i> and <i>Cache/Rasters/SRTMV3R3/TileIndex.dat</i> under the Maperitive installation directory.</p>
+<h4 id="Registering on EarthData Portal">
+	Registering on EarthData Portal
+</h4>
+<p>The first thing you need to do is to <a href="https://urs.earthdata.nasa.gov/users/new">register yourself on the EarthData portal</a>, if you haven't done that already. You will also have to allow NASA's applications access to your newly registered account (read the instructions on the portal).</p>
+<h4 id="Access A Sample SRTM File">
+	Access A Sample SRTM File
+</h4>
+<p>After registering on the EarthData portal, visit the SRTM V3 server by entering  <a href="https://e4ftl01.cr.usgs.gov/MEASURES/SRTMGL3.003/2000.02.11/">https://e4ftl01.cr.usgs.gov/MEASURES/SRTMGL3.003/2000.02.11/</a> URL in the browser. Be patient while it loads the directory list, the file list is huge and the server is slow.</p><p>Now open Chrome's Developer Tools (F12 keyboard shortcut) and click on its <strong>Network</strong> tab. After that, click on one of the .hgt.zip files in the directory list (like <a href="https://e4ftl01.cr.usgs.gov/MEASURES/SRTMGL3.003/2000.02.11/N00E006.SRTMGL3.hgt.zip">https://e4ftl01.cr.usgs.gov/MEASURES/SRTMGL3.003/2000.02.11/N00E006.SRTMGL3.hgt.zip</a>) to download it. The browser will ask you for EarthData login credentials and after the successful login, the network tab should contain an entry that looks something like the one below (be sure to use the one with status 200, not 302!):</p><p><div class="image">
+	<img src="../images/ChromeDevToolsNetworkItem.png" />
+</div></p><p>Now click on that entry and the details pane will show up:</p><p><div class="image">
+	<img src="../images/ChromeDevToolsNetworkItemDetails.png" />
+</div></p><p>Scroll down to <strong>Request Headers</strong> section and look for <strong>Cookie</strong> entry starting with <strong>'DATA=</strong>':</p><p><div class="image">
+	<img src="../images/ChromeDevToolsNetworkItemCookie.png" />
+</div></p><p>What comes after that '=' character is a string called <strong>authentication token</strong> and we need to supply it to Maperitive for it to be able to download SRTM tiles on your behalf. So copy the token into the clipboard (or a text editor) and continue to the final step.</p>
+<h4 id="Give Maperitive the Authentication Token">
+	Give Maperitive the Authentication Token
+</h4>
+<p>Run Maperitive and enter the following command in the Command Prompt:</p><pre>
+ set-setting name=user.earthdata-auth-token value=&lt;auth token&gt;
+</pre><p>(replace <<strong>auth token</strong>> with your own authentication token copied in the clipboard, without <> brackets).</p><p>That is it. Now you should be able to access the SRTM V3 tiles within Maperitive - try it out using one of Maperitive's relief functions. And also be sure to read the following Troubleshooting section.</p>
+<h3 id="Troubleshooting SRTM V3 Access">
+	Troubleshooting SRTM V3 Access
+</h3>
+<p>You may encounter several errors when trying to download SRTM V3 tiles:</p><ol>
+	<li>"<i>OAuth 2 authentication token for NASA's server is not provided, unable to access the SRTM data</i>" - this means you have not provided the authentication token.</li>
+	<li>"<i>The remote server returned an error: (401) Unauthorized</i>" - the authentication token you provided is no longer valid. This either means you have switched your computer to another network or that the token is too old.</li>
+	<li>"<i>There is no 'SRTMV3R1' DEM coverage for the requested area</i>" - you probably did not delete the existing tile index files.</li>
+
+</ol><p>In all of the above cases, repeat the procedure described above.</p>
+<h2 id="Using Your Own Custom DEM Sources">
+	Using Your Own Custom DEM Sources
+</h2>
+<p>TODO</p>
+<h2 id="Links & Resources">
+	Links & Resources
+</h2>
+<ul>
+	<li><a href="http://srtm.usgs.gov/">Shuttle Radar Topography Mission</a> - NASA's official site</li>
+	<li><a href="http://en.wikipedia.org/wiki/Shuttle_Radar_Topography_Mission">Wikipedia: Shuttle Radar Topography Mission</a></li>
+	<li><a href="http://www.viewfinderpanoramas.org/dem3.html">Viewfinder Panoramas</a> - Unofficial SRTM data with voids corrected using topographic maps</li>
+	<li><a href="http://www.vterrain.org/Elevation/SRTM/">vterrain.org: SRTM: NASA Shuttle Radar Topography Mission</a></li>
+	<li><a href="http://www.webgis.com/srtm3.html">SRTM3 Coverage Map</a></li>
+	<li><a href="http://www.webgis.com/srtm1.html">SRTM1 Coverage Map</a></li>
+	<li><a href="http://igorbrejc.net/openstreetmap/viewfinders-dem-data-comparison-with-srtm">igorbrejc.net: Viewfinder DEM Data: Comparison With SRTM</a></li>
+
+</ul><p><div class="seealso">
+    See also:
+    <ul>
+        <li>
+                    <a href="../Commands/GenerateHypsometric.html">generate-hypsometric Command</a>
+                </li>
+        <li>
+                    <a href="../Commands/GenerateReliefImageIgor.html">generate-relief-igor Command</a>
+                </li>
+    </ul>
+</div></p><p> </p>
+        </div>
+        
+    </body>
+</html>
