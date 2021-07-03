@@ -1,0 +1,14 @@
+{
+	"choose_language": "Choose language:",
+	"error": "Error!",
+	"nothing_to_check": "Nothing to check!",
+	"check_done": "Check done",
+	"directory_contains": "Directory contains {pages} page(s)",
+	"path_to_pages": "Path to pages:",
+	"select": "Select",
+	"check": "Check",
+	"attachments": "Attachments:",
+	"attachment_HAM_radio": "HAM radio frequencies",
+	"attachment_region_codes": "Russian region codes",
+	"map_name": "Map name:"
+}
