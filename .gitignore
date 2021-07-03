@@ -8,3 +8,6 @@ output/
 Maperitive/Cache/
 Maperitive/logs/
 Maperitive/Temp/
+
+#settings file from composer
+settings.json
