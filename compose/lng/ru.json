@@ -1,3 +1,20 @@
 {
-	"choose_language": "Выберите язык:"
+  "aborted_by_user": "Отменено пользователем!",
+  "attachment_HAM_radio": "Частоты любит. радио",
+  "attachment_region_codes": "Коды регионов РФ",
+  "attachments": "Приложения:",
+  "check": "Проверить",
+  "check_done": "Проверка заверщена",
+  "choose_language": "Выберите язык:",
+  "directory_contains": "Папка содержит {pages} стр.",
+  "done": "Завершено!",
+  "error": "Ошибка!",
+  "map_name": "Название карты: (для переноса использвуйте \\n)",
+  "nothing_to_check": "Нет данных для проверки!",
+  "nothing_to_process": "Нет данных для обработки!",
+  "path_to_pages": "Путь к папке со страницами:",
+  "processing": "Обработка...",
+  "processing_pdf": "Обработка PDF файла, подождите...",
+  "select": "Выбрать",
+  "start": "Старт!"
 }
